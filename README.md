@@ -183,4 +183,128 @@ dev    home   media  opt    root   sbin   sys    usr
 
 ```
 
+## Docker client options 
+
+<img src="client.png">
+
+## removing all containers from docker engine 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker rm $(docker ps -aq) -f
+
+```
+
+## app containerization 
+
+<img src="appcont.png">
+
+## app to image
+
+<img src="build1.png">
+
+## Building first docker image for python code 
+
+```
+[ec2-user@ip-172-31-70-200 pythoncode]$ ls
+Dockerfile  hello.py
+[ec2-user@ip-172-31-70-200 pythoncode]$ docker  build  -t   ashupython:v1  .
+Sending build context to Docker daemon  3.584kB
+Step 1/6 : FROM python
+ ---> d92f72c38f7e
+Step 2/6 : LABEL  name="ashutoshh singh"
+ ---> Running in 54c37ee7ff19
+Removing intermediate container 54c37ee7ff19
+ ---> d9baa43b70c0
+Step 3/6 : LABEL email="ashutoshh@linux.com"
+ ---> Running in ca04ecf42982
+Removing intermediate container ca04ecf42982
+ ---> 989281d997c9
+Step 4/6 : RUN  mkdir /code
+ ---> Running in d5033e75256b
+Removing intermediate container d5033e75256b
+ ---> 2ce944e52d17
+Step 5/6 : COPY hello.py  /code/hello.py
+ ---> f16386a28323
+Step 6/6 : CMD ["python","/code/hello.py"]
+ ---> Running in 5b743c09bd64
+Removing intermediate container 5b743c09bd64
+ ---> 0f2c636ef0d4
+Successfully built 0f2c636ef0d4
+Successfully tagged ashupython:v1
+
+```
+
+### Dockerfile example 1
+
+```
+
+FROM oraclelinux:8.3 
+LABEL  name="ashutoshh singh"
+LABEL email="ashutoshh@linux.com"
+RUN dnf install python3 -y
+RUN  mkdir /code
+COPY hello.py  /code/hello.py
+CMD ["python3","/code/hello.py"]
+
+```
+
+## Dockerfile example 2 
+
+```
+FROM python
+# We are going to user python docker image
+# it will be pulled from Docker hub if not present 
+# in Docker engine host 
+LABEL  name="ashutoshh singh"
+LABEL email="ashutoshh@linux.com"
+# just info about image designer 
+# this field is optional 
+RUN  mkdir /code
+# during image build time it will give you 
+# container shell access like docker exec -it 
+COPY hello.py  /code/hello.py
+# copy data from docker client machine to
+# docker engine during build time 
+# its like docker cp -- 
+CMD ["python","/code/hello.py"]
+
+```
+
+### if file name is not Dockerfile 
+
+```
+[ec2-user@ip-172-31-70-200 pythoncode]$ docker  build  -t   ashupython:v2 -f ashupython.dockerfile  .Sending build context to Docker daemon  4.608kB
+Step 1/7 : FROM oraclelinux:8.3
+ ---> 816d99f0bbe8
+Step 2/7 : LABEL  name="ashutoshh singh"
+ ---> Running in 803d5831071b
+Removing intermediate container 803d5831071b
+ ---> 1cc70e2b1f33
+Step 3/7 : LABEL email="ashutoshh@linux.com"
+ ---> Running in f26813a468cc
+Removing intermediate container f26813a468cc
+
+```
+
+### creating container 
+
+```
+ 113  docker  images
+  114  docker  run  -itd  --name  ashuxc1  ashupython:v1  
+  115  docker  ps
+  116  docker  run  -itd  --name  ashuxc2  ashupython:v2  
+  117  docker  ps
+  118  docker  run  -itd  --name  ashuxc3  ashupython:v3  
+  119  docker ps
+  120  history 
+[ec2-user@ip-172-31-70-200 pythoncode]$ docker  ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS     NAMES
+ac3cfc2cb055   ashupython:v3     "python3 /code/hello…"   13 seconds ago   Up 12 seconds             ashuxc3
+a93ab0f9ff55   satyapython3:v3   "python3 /code/hello…"   15 seconds ago   Up 14 seconds             satyatest1
+3e2438671fd6   ashupython:v2     "python3 /code/hello…"   30 seconds ago   Up 29 seconds             ashuxc2
+6fa70b74e041   kruspython:v1     "python /code/hello.…"   50 seconds ago   Up 49 seconds             krushnac1
+33b85e19cb66   ashupython:v1     "python /code/hello.…"   54 seconds ago   Up 53 seconds             ashuxc1
+
+```
+
 

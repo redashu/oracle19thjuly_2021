@@ -1,1 +1,4 @@
-# check day1 to day5 branch for access 
+# discussion 
+
+<img src="plan.png">
+

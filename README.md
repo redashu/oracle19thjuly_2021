@@ -109,4 +109,78 @@ c240dd2a3187   alpine:latest   "ping localhost"   4 minutes ago    Up 4 minutes 
 
 ```
 
+### checking output of a running container 
+
+```
+ 53  docker  ps
+   54  docker  logs  ashuc1
+   55  docker  logs  -f  ashuc1
+   
+```
+
+### stopping a running container 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker  stop  ashuc1   
+ashuc1
+[ec2-user@ip-172-31-70-200 ~]$ docker  ps
+CONTAINER ID   IMAGE            COMMAND            CREATED          STATUS          PORTS     NAMES
+c4bbd17670c2   alpine:latest    "ping 127.0.0.1"   4 minutes ago    Up 4 minutes              phpaladu1
+737512bcf2c3   alpine:latest    "ping 127.0.0.1"   5 minutes ago    Up 5 minutes              srini
+530a153bddc4   busybox:latest   "ping localhost"   5 minutes ago    Up 5 minutes              avijc2
+8b23d07aac19   alpine:latest    "ping 127.0.0.1"   6 minutes ago    Up 6 minutes              deepa
+e41f39da3e2a   alpine:latest    "ping 127.0.0.1"   6 minutes ago    Up 6 minutes              krushna1
+548a903d1cf3   ubuntu:14.04     "ping 127.0.0.1"   6 minutes ago    Up 6 minutes              satya
+54a8dabb04c7   alpine:latest    "ping 127.0.0.1"   7 minutes ago    Up 7 minutes              mamtac1
+c240dd2a3187   alpine:latest    "ping localhost"   11 minutes ago   Up 11 minutes             avijc1
+
+```
+
+### starting a container 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker  ps -a
+CONTAINER ID   IMAGE            COMMAND                 CREATED          STATUS                        PORTS      NAMES
+c4bbd17670c2   alpine:latest    "ping 127.0.0.1"        5 minutes ago    Up 5 minutes                             phpaladu1
+737512bcf2c3   alpine:latest    "ping 127.0.0.1"        5 minutes ago    Up 5 minutes                             srini
+530a153bddc4   busybox:latest   "ping localhost"        6 minutes ago    Up 6 minutes                             avijc2
+8b23d07aac19   alpine:latest    "ping 127.0.0.1"        6 minutes ago    Exited (137) 35 seconds ago              deepa
+e41f39da3e2a   alpine:latest    "ping 127.0.0.1"        7 minutes ago    Up 7 minutes                             krushna1
+548a903d1cf3   ubuntu:14.04     "ping 127.0.0.1"        7 minutes ago    Up 7 minutes                             satya
+54a8dabb04c7   alpine:latest    "ping 127.0.0.1"        8 minutes ago    Up 8 minutes                             mamtac1
+0d44ac7073bb   alpine:latest    "ping 127.0.0.1"        9 minutes ago    Exited (137) 50 seconds ago              ashuc1
+c240dd2a3187   alpine:latest    "ping localhost"        12 minutes ago   Up 12 minutes                            avijc1
+c9759da887e1   tomcat           "x1 'ping localhost'"   24 minutes ago   Created                       8080/tcp   thirsty_proskuriakova
+09e4690634aa   alpine           "ping localhost"        32 minutes ago   Up 32 minutes                            x1
+79581fbe2d70   fedora           "/bin/bash"             35 minutes ago   Up 34 minutes                            charming_kare
+[ec2-user@ip-172-31-70-200 ~]$ docker  start  ashuc1
+ashuc1
+[ec2-user@ip-172-31-70-200 ~]$ docker  ps 
+CONTAINER ID   IMAGE            COMMAND            CREATED          STATUS          PORTS     NAMES
+c4bbd17670c2   alpine:latest    "ping 127.0.0.1"   5 minutes ago    Up 5 minutes       
+
+```
+
+### access shell of a running container 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker  exec  -it   ashuc1  sh 
+/ # uname
+Linux
+/ # whoami
+root
+/ # cat  /etc/os-release 
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.14.0
+PRETTY_NAME="Alpine Linux v3.14"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://bugs.alpinelinux.org/"
+/ # ls  /
+bin    etc    lib    mnt    proc   run    srv    tmp    var
+dev    home   media  opt    root   sbin   sys    usr
+/ # exit
+
+```
+
 

@@ -195,6 +195,69 @@ docker run -itd  --name ashwebc2  --restart always --memory 100m -p 8843:80 ashu
 
 <img src="img.png">
 
+## saving and loading image
+
+<img src="save.png">
+
+## creating image from a container 
+
+```
+docker  commit  xxc1  imgfromcont:v1
+
+```
+
+## Image registry 
+
+<img src="reg.png">
 
 
+## COntainer registries 
 
+<img src="reg1.png">
+
+
+## docker image name reality 
+
+<img src="name.png">
+
+## pushing image to docker hub 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker  tag  ashupython:v3    dockerashu/oraclepython:20thjuly2021v1 
+[ec2-user@ip-172-31-70-200 ~]$ 
+[ec2-user@ip-172-31-70-200 ~]$ docker  images  |   grep -i ashu
+ashuweb                       v1                70dcfe229790   2 hours ago      133MB
+ashujava                      v2                ea61fe836ad9   2 hours ago      600MB
+ashujava                      v1                c82d04841998   3 hours ago      467MB
+dockerashu/oraclepython       20thjuly2021v1    9fd5dbc0392e   22 hours ago     53.9MB
+ashupython                    v3                9fd5dbc0392e   22 hours ago     53.9MB
+ashupython                    v2                96114f4f2e2a   22 hours ago     373MB
+ashupython                    v1                0f2c636ef0d4   22 hours ago     886MB
+[ec2-user@ip-172-31-70-200 ~]$ docker  login  -u  dockerashu 
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ec2-user@ip-172-31-70-200 ~]$ docker  push dockerashu/oraclepython:20thjuly2021v1
+The push refers to repository [docker.io/dockerashu/oraclepython]
+5dc562f0fd83: Pushed 
+41e6f0101426: Pushed 
+1849cae7f1bf: Mounted from amarendarm/python 
+72e830a4dff5: Mounted from amarendarm/python 
+20thjuly2021v1: digest: sha256:c8300506646df84c3a1582d0601cb37b9f6c375582afb6d4fe0e0ac6871fe238 size: 1154
+
+```
+
+### pushing image on Quay 
+
+```
+ 279   docker  tag  ashupython:v3    quay.io/redashu/oraclepython:v1  
+  280  docker login  quay.io 
+  281  docker  push quay.io/redashu/oraclepython:v1
+  282  docker  logout  quay.io 
+  
+ ```
+ 
+ 

@@ -392,5 +392,144 @@ eth0      Link encap:Ethernet  HWaddr 16:00:A9:2D:3D:99
 
 ```
 
+### creating custom bridge 
 
+## method 1 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker  network create  ashubr1 
+0832a76c00c8dae6fe061d29b0ed1937a3837a7f63d3caadcbbeb6f2024a0122
+[ec2-user@ip-172-31-70-200 ~]$ docker network ls
+NETWORK ID     NAME         DRIVER    SCOPE
+0832a76c00c8   ashubr1      bridge    local
+7b8253b0ff2c   bridge       bridge    local
+09dc344424b7   host         host      local
+a8d2cdb60b69   krushnabr1   bridge    local
+5d9fcf774f58   none         null      local
+[ec2-user@ip-172-31-70-200 ~]$ docker network  inspect  ashubr1  
+[
+    {
+        "Name": "ashubr1",
+        "Id": "0832a76c00c8dae6fe061d29b0ed1937a3837a7f63d3caadcbbeb6f2024a0122",
+        "Created": "2021-07-20T11:00:43.774717337Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+                
+  ```
+    
+  ## method 2 
+  
+  <img src="createbr1.png">
+  
+  ### demo 
+  
+  ```
+  41  docker  network create  ashubr2  --subnet  192.168.100.0/24 
+  342  docker  run -ti --rm  --network ashubr1  alpine sh 
+  343  docker  run -ti --rm  --network ashubr2  alpine sh 
+  344  history 
+  345  docker  run -ti --rm  --network ashubr2 --ip 192.168.100.200  alpine sh 
+  
+  ```
+  
+ ## Docker storage 
+ 
+ <img src="st1.png">
+ 
+ ### container storage options 
+ 
+ <img src="st2.png">
+ 
+ ### checking ephemral nature of container 
+ 
+ ```
+ [ec2-user@ip-172-31-70-200 ~]$ docker run -it --name ashud1  oraclelinux:8.3  bash 
+[root@e6d7400356a1 /]# 
+[root@e6d7400356a1 /]# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@e6d7400356a1 /]# mkdir  hello world data is imp
+[root@e6d7400356a1 /]# ls
+bin   data  etc    home  is   lib64  mnt  proc  run   srv  tmp  var
+boot  dev   hello  imp   lib  media  opt  root  sbin  sys  usr  world
+[root@e6d7400356a1 /]# echo  hello  >a.txt
+[root@e6d7400356a1 /]# ls
+a.txt  boot  dev  hello  imp  lib    media  opt   root  sbin  sys  usr  world
+bin    data  etc  home   is   lib64  mnt    proc  run   srv   tmp  var
+[root@e6d7400356a1 /]# cat  a.txt 
+hello
+[root@e6d7400356a1 /]# exit
+exit
+[ec2-user@ip-172-31-70-200 ~]$ docker rm  ashud1 
+ashud1
+[ec2-user@ip-172-31-70-200 ~]$ docker run -it --name ashud1  oraclelinux:8.3  bash 
+[root@36df52cfa3bb /]# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@36df52cfa3bb /]# exit
+exit
+[ec2-user@ip-172-31-70-200 ~]$ 
+
+```
+
+### creating volume 
+
+```
+docker volume create ashuvol1 
+
+[ec2-user@ip-172-31-70-200 ~]$ docker  volume   inspect  ashuvol1 
+[
+    {
+        "CreatedAt": "2021-07-20T11:20:12Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/ashuvol1/_data",
+        "Name": "ashuvol1",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+```
+
+### attaching a volume with container 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker run -it --name ashud2   -v  ashuvol1:/datastorage:rw     oraclelinux:8.3  bash 
+[root@53bb3a4e5a57 /]# 
+[root@53bb3a4e5a57 /]# 
+[root@53bb3a4e5a57 /]# ls
+bin  boot  datastorage  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@53bb3a4e5a57 /]# cd  datastorage/
+[root@53bb3a4e5a57 datastorage]# ls
+[root@53bb3a4e5a57 datastorage]# mkdir hello world
+[root@53bb3a4e5a57 datastorage]# ls
+hello  world
+[root@53bb3a4e5a57 datastorage]# echo hello >a.txt
+[root@53bb3a4e5a57 datastorage]# ls
+a.txt  hello  world
+[root@53bb3a4e5a57 datastorage]# exit
+exit
+[ec2-user@ip-172-31-70-200 ~]$ docker rm  ashud2 
+ashud2
+[ec2-user@ip-172-31-70-200 ~]$ 
+[ec2-user@ip-172-31-70-200 ~]$ docker run -it --name ashud2   -v  ashuvol1:/datastorage:rw     oraclelinux:8.3  bash 
+[root@e94f3e4b3b8b /]# ls
+bin  boot  datastorage  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@e94f3e4b3b8b /]# cd datastorage/
+[root@e94f3e4b3b8b datastorage]# ls
+a.txt  hello  world
+[root@e94f3e4b3b8b datastorage]# 
+
+```
+
+
+  
  

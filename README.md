@@ -260,4 +260,137 @@ The push refers to repository [docker.io/dockerashu/oraclepython]
   
  ```
  
+ # Docker networking 
+ 
+ ## topology in any org 
+ 
+ <img src="dnet1.png">
+ 
+ ## creating container and checking ip address
+ 
+ ```
+ docker run -tid --name ashuc1  alpine ping fb.com
+ 
+ [ec2-user@ip-172-31-70-200 ~]$ docker  inspect  ashuc1  --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.2
+[ec2-user@ip-172-31-70-200 ~]$ 
+[ec2-user@ip-172-31-70-200 ~]$ docker  inspect  test1   --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.11
+
+```
+
+
+### access other container 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker  exec -it ashuc1  sh 
+/ # 
+/ # 
+/ # ping  172.17.0.5
+PING 172.17.0.5 (172.17.0.5): 56 data bytes
+64 bytes from 172.17.0.5: seq=0 ttl=255 time=0.165 ms
+64 bytes from 172.17.0.5: seq=1 ttl=255 time=0.109 ms
+64 bytes from 172.17.0.5: seq=2 ttl=255 time=0.091 ms
+64 bytes from 172.17.0.5: seq=3 ttl=255 time=0.122 ms
+64 bytes from 172.17.0.5: seq=4 ttl=255 time=0.118 ms
+64 bytes from 172.17.0.5: seq=5 ttl=255 time=0.114 ms
+^C
+--- 172.17.0.5 ping statistics ---
+6 packets transmitted, 6 packets received, 0% packet loss
+round-trip min/avg/max = 0.091/0.119/0.165 ms
+/ # ping  172.17.0.9
+PING 172.17.0.9 (172.17.0.9): 56 data bytes
+64 bytes from 172.17.0.9: seq=0 ttl=255 time=0.122 ms
+64 bytes from 172.17.0.9: seq=1 ttl=255 time=0.086 ms
+64 bytes from 172.17.0.9: seq=2 ttl=255 time=0.087 ms
+^C
+--- 172.17.0.9 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.086/0.098/0.122 ms
+
+```
+
+## Docker host is having NAT in built 
+
+<img src="nat.png">
+
+## port forwarding concept 
+
+<img src="portf.png">
+
+### port forwarding apply 
+
+<img src="portff.png">
+
+## Say no to docker0 bridge 
+
+<img src="custom.png">
+
+### COntainer network more info 
+
+```
+[ec2-user@ip-172-31-70-200 ~]$ docker   network  ls
+NETWORK ID     NAME      DRIVER    SCOPE
+7b8253b0ff2c   bridge    bridge    local
+09dc344424b7   host      host      local
+5d9fcf774f58   none      null      local
+[ec2-user@ip-172-31-70-200 ~]$ docker  network  inspect   bridge  
+[
+    {
+        "Name": "bridge",
+        "Id": "7b8253b0ff2c6ad755339a0029f238530ac5ce61f483d29d3e5357f1ebaf87a1",
+        "Created": "2021-07-20T03:58:32.940045882Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        
+        
+ ```
+ 
+ ### NOne bridge demo 
+ 
+ <img src="nonebr.png">
+ 
+ ### Host bridge in docker 
+ 
+ <img src="host1.png">
+ 
+ ### network bridge 
+ 
+ ```
+ [ec2-user@ip-172-31-70-200 ~]$ docker  run -it --rm --network host alpine sh 
+/ # ifconfig 
+docker0   Link encap:Ethernet  HWaddr 02:42:AE:13:74:09  
+          inet addr:172.17.0.1  Bcast:172.17.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::42:aeff:fe13:7409/64 Scope:Link
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:100811 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:152418 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:7738053 (7.3 MiB)  TX bytes:1280363080 (1.1 GiB)
+
+eth0      Link encap:Ethernet  HWaddr 16:00:A9:2D:3D:99  
+          inet addr:172.31.70.200  Bcast:172.31.79.255  Mask:255.255.240.0
+          inet6 addr: fe80::1400:a9ff:fe2d:3d99/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:9001  Metric:1
+          RX packets:1529642 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:863626 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:1574387738 (1.4 GiB)  TX bytes:612366389 (583.9 MiB)
+
+
+```
+
+
  

@@ -48,5 +48,21 @@ a3174063396d
   
 ```
 
+## restart policy and json format 
+
+```
+4  docker  inspect  xx1   --format='{{.State.Status}}'
+  195  docker  inspect  xx1   --format='{{.HostConfig.RestartPolicy.Name}}'
+  196  docker  ps
+  197  docker  inspect  srinivascg1  --format='{{.HostConfig.RestartPolicy.Name}}'
+  198  docker  inspect  srinivascg1   --format='{{.State.Status}}'
+  199  history 
+  
+```
+
+## restart policy 
+
+[docs](https://docs.docker.com/config/containers/start-containers-automatically/)
+
 
 

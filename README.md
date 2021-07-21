@@ -197,5 +197,43 @@ docker  run -itd --name webui --restart always -p 9000:9000 -v /var/run/docker.s
 
 ```
 
+## COntainer RUn time Engine problems 
+
+<img src="prob.png">
+
+## Container orchestration engine 
+
+<img src="carch.png">
+
+## Introduction to k8s 
+
+<img src="k8s1.png">
+
+
+## k8s arch level 1 
+
+<img src="k8s2.png">
+
+## k8s solved scheduling of containers problem 
+
+<img src="ksch.png">
+
+## replication controller 
+
+<img src="rc.png">
+
+### RC 
+
+<img src="rc1.png">
+
+## Node controller 
+
+<img src="nc1.png">
+
+## nc again 
+
+<img src="nc2.png">
+
+
 
 

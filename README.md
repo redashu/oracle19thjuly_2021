@@ -234,6 +234,81 @@ docker  run -itd --name webui --restart always -p 9000:9000 -v /var/run/docker.s
 
 <img src="nc2.png">
 
+## kube-apiServer 
 
+<img src="api1.png">
+
+<img src="api2.png">
+
+## ETcd 
+
+<img src="etcd.png">
+
+## kubernetes cluster deployment options 
+
+<img src="k8sops.png">
+
+
+## Deploy k8s using minikube 
+
+<img src="minikube.png">
+
+
+### Installing minikube 
+
+```
+❯ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 65.9M  100 65.9M    0     0  1975k      0  0:00:34  0:00:34 --:--:-- 1152k
+❯ sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+Password:
+❯ minikube version
+minikube version: v1.22.0
+commit: a03fbcf166e6f74ef224d4a63be4277d017bb62e
+
+```
+
+###  STARTING K8S CLSUTER 
+
+```
+❯ minikube  start  --driver=docker
+😄  minikube v1.22.0 on Darwin 11.4
+✨  Using the docker driver based on user configuration
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+💾  Downloading Kubernetes v1.21.2 preload ...
+    > gcr.io/k8s-minikube/kicbase...: 361.09 MiB / 361.09 MiB  100.00% 1.59 MiB
+    > preloaded-images-k8s-v11-v1...: 502.14 MiB / 502.14 MiB  100.00% 1.19 MiB
+🔥  Creating docker container (CPUs=2, Memory=1988MB) ...
+🐳  Preparing Kubernetes v1.21.2 on Docker 20.10.7 ...
+    ▪ Generating certificates and keys ...| ^[[1- ^[[1| ^[[1- ^[[1/ ^R
+^[[17~^[[17~^[[17~^[[
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+
+```
+
+## k8s client software is kubectl 
+
+<img src="kubect.png">
+
+### connecting to kubernetes cluster 
+
+```
+❯ kubectl  get  nodes
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   30m   v1.21.2
+❯ kubectl  get  nodes  --kubeconfig  admin.conf
+NAME         STATUS   ROLES                  AGE     VERSION
+masternode   Ready    control-plane,master   6h18m   v1.21.3
+minion1      Ready    <none>                 6h17m   v1.21.3
+minion2      Ready    <none>                 6h16m   v1.21.3
+
+```
 
 

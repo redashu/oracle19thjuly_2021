@@ -310,5 +310,97 @@ minion1      Ready    <none>                 6h17m   v1.21.3
 minion2      Ready    <none>                 6h16m   v1.21.3
 
 ```
+## creating context with minikube and aditional cluster
 
+```
+❯ minikube stop
+✋  Stopping node "minikube"  ...
+🛑  Powering off "minikube" via SSH ...
+🛑  1 nodes stopped.
+❯ minikube status
+minikube
+type: Control Plane
+host: Stopped
+kubelet: Stopped
+apiserver: Stopped
+kubeconfig: Stopped
+
+```
+
+## kubeconfig file location in windwos and mac 
+
+<img src="kube.png">
+
+## minikube start
+
+```
+❯ minikube start
+😄  minikube v1.22.0 on Darwin 11.4
+✨  Using the docker driver based on existing profile
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+🔄  Restarting existing docker container for "minikube" ...
+🐳  Preparing Kubernetes v1.21.2 on Docker 20.10.7 ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+❯ kubectl  get  nodes
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   45m   v1.21.2
+
+```
+
+## switching k8s contexts
+
+<img src="context.png">
+
+## steps to deployment any docker image to the k8s cluster 
+
+<img src="dep1.png">
+
+## pod vs containers
+
+<img src="podcont.png">
+
+## pod in reality 
+
+<img src="pod1.png">
+
+## Kubernetes as YAML 
+
+<img src="yaml.png">
+
+## POD Design explanation 
+
+<img src="exp.png">
+
+
+## first pod deployment 
+
+```
+1222  kubectl  apply -f  ashupod1.yaml --dry-run=client 
+ 1223  kubectl  apply -f  ashupod1.yaml
+ 1224  kubectl  get  pods 
+ 1225  kubectl  get  pods   ashupod-123  
+ 
+```
+
+## 
+
+```
+1235  kubectl  get po  ashupod-123
+ 1236  kubectl  logs -f   ashupod-123
+ 1237  kubectl  describe pod ashupod-123 
+ 1238  history
+ 1239  docker run  -d  --name x1  dockerashu/oraclepython:20thjuly2021v1 
+ 1240  docker  ps
+ 1241  docker logs -f  x1 
+ 1242  docker run  -itd  --name x2  dockerashu/oraclepython:20thjuly2021v1 
+ 1243  docker logs -f  x2 
+ 1244  history
+ 1245  docker logs -f  x1
+ 
+ ```
+ 
 

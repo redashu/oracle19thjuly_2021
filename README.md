@@ -290,4 +290,137 @@ ashusvc1   NodePort   10.111.233.144   <none>        1234:31936/TCP   3m56s   ru
 
 ```
 
+### cleanin namespace 
+
+```
+❯ kubectl  delete  svc  ashusvc1
+service "ashusvc1" deleted
+❯ kubectl  delete all --all
+pod "ashupod-123" deleted
+pod "webapp1" deleted
+pod "webapp2" deleted
+service "ashusvc2" deleted
+
+
+```
+
+### dashboard deployment 
+
+```
+❯ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard unchanged
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard unchanged
+deployment.apps/kubernetes-dashboard created
+service/dashboard-metrics-scraper created
+deployment.apps/dashboard-metrics-scraper created
+
+```
+
+### getting k8s dashboard secret 
+
+<img src="sec.png">
+
+### history for dashboard deployment 
+
+```
+ 1388  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+ 1389  kubectl  get  po  -n kubernetes-dashboard 
+ 1390  kubectl  get  svc  -n kubernetes-dashboard 
+ 1391  kubectl  edit  svc kubernetes-dashboard    -n kubernetes-dashboard 
+ 1392  kubectl  get  svc  -n kubernetes-dashboard 
+ 1393  kubectl  get  secret  -n kubernetes-dashboard 
+ 1394  kubectl describe   secret  kubernetes-dashboard-token-vddm9    -n kubernetes-dashboard 
+ 1395* ls
+ 1396* kubectl apply -f  permission.yaml
+❯ 
+❯ 
+❯ kubectl  get  svc -n  kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
+dashboard-metrics-scraper   ClusterIP   10.101.248.221   <none>        8000/TCP        17m
+kubernetes-dashboard        NodePort    10.108.153.10    <none>        443:31545/TCP   17m
+
+```
+
+### Best way to deploy app in k8s
+
+<img src="appd.png">
+
+## deployment in k8s
+
+<img src="dep.png">
+
+### generating deployment YAML
+
+```
+kubectl  create deployment  ashuapp2  --image=dockerashu/ashuoracleweb:v111  --dry-run=client -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuapp2
+  name: ashuapp2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuapp2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuapp2
+    spec:
+      containers:
+      - image: dockerashu/ashuoracleweb:v111
+        name: ashuoracleweb
+        resources: {}
+status: {}
+
+
+```
+
+### k8s cheatsheet URL
+
+[URL](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+
+### creating deployment 
+
+```
+❯ ls
+ashuapp1.json   ashuapp2.yaml   ashupod1.yaml   permission.yaml
+ashuapp1.yaml   ashudep.yaml    customer1       svc1.yaml
+❯ kubectl  apply -f  ashudep.yaml
+deployment.apps/ashuapp2 created
+service/ashusvc3 created
+
+```
+
+### k8s help 
+
+```
+45  kubectl  explain  pod 
+ 1446  kubectl  explain  pod.spec 
+ 1447  kubectl  explain  pod.spec.containers  
+ 1448  history
+ 1449  kubectl  explain service
+ 1450  kubectl  explain service.spec
+ 1451  history
+ 1452  kubectl  api-resources 
+ 1453  kubectl  api-resources   |  wc -l
+ 1454  kubectl  api-resources 
+
+```
+
+
 

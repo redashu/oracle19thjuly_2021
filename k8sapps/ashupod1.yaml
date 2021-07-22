@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: ashupod-123  # name of my POD 
+ namespace: ashu-space # namespace info 
+spec: 
+ containers: # here we write info about app in docker image
+ - image: dockerashu/oraclepython:20thjuly2021v1 # image name from docker hub
+   name: ashuc1 # name of container 
+

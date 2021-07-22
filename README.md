@@ -189,4 +189,23 @@ webapp1       1/1     Running   0          23s    192.168.179.232   minion2   <n
  1333* kubectl  get  po -o wide
 
 ```
+### networking in k8s 
+
+<img src="net1.png">
+
+##
+
+<img src="net2.png">
+
+### accessing from k8s client machine 
+
+```
+ kubectl  port-forward  webapp1   9999:80
+Forwarding from 127.0.0.1:9999 -> 80
+Forwarding from [::1]:9999 -> 80
+Handling connection for 9999
+Handling connection for 9999
+
+```
+
 

@@ -208,4 +208,86 @@ Handling connection for 9999
 
 ```
 
+## Intro to services in k8s 
+
+<img src="svc.png">
+
+## service use label of pod to connect
+
+<img src="svc1.png">
+
+## type of service in k8s
+
+<img src="stype.png">
+
+## Nodeport service with LB 
+
+<img src="np.png">
+
+## creating service in k8s
+
+```
+❯ kubectl  create   service   nodeport  ashusvc1  --tcp  1234:80   --dry-run=client -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashusvc1
+  name: ashusvc1
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ashusvc1
+  type: NodePort
+status:
+  loadBalancer: {}
+❯ kubectl  create   service   nodeport  ashusvc1  --tcp  1234:80   --dry-run=client -o yaml  >svc1.yaml
+
+```
+
+### understanding service YAML 
+
+<img src="svcyml.png">
+
+### checking lable of running pod 
+
+```
+❯ kubectl  get  po  webapp1  --show-labels
+NAME      READY   STATUS    RESTARTS   AGE    LABELS
+webapp1   1/1     Running   0          3h4m   run=webapp1
+
+```
+
+### deploy service 
+
+```
+❯ kubectl  apply -f  svc1.yaml
+service/ashusvc1 created
+❯ kubectl  get  service
+NAME       TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashusvc1   NodePort   10.111.233.144   <none>        1234:31936/TCP   7s
+❯ kubectl  get  svc
+NAME       TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashusvc1   NodePort   10.111.233.144   <none>        1234:31936/TCP   12s
+
+```
+
+## checking pod and svc
+
+```
+❯ kubectl  get  po --show-labels
+NAME          READY   STATUS    RESTARTS   AGE     LABELS
+ashupod-123   1/1     Running   0          4h58m   <none>
+webapp1       1/1     Running   0          3h10m   run=webapp1
+❯ kubectl  get  svc -o wide
+NAME       TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE     SELECTOR
+ashusvc1   NodePort   10.111.233.144   <none>        1234:31936/TCP   3m56s   run=webapp1
+
+```
+
 

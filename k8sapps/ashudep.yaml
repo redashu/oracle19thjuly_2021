@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels: # label of deployment  
+    app: ashuapp2
+  name: ashuapp2 # name of Deployment 
+  namespace: ashu-space # name space info 
+spec:
+  replicas: 1 # number of pod we want 
+  selector:
+    matchLabels:
+      app: ashuapp2
+  strategy: {}
+  template: # deployment use template to create pods
+    metadata:
+      creationTimestamp: null
+      labels: # label of POD
+        app: ashuapp2
+    spec:
+      containers:
+      - image: dockerashu/ashuoracleweb:v111
+        name: ashuoracleweb
+        env: # injecting env var and its value 
+        - name: deploy
+          value: app2 
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashusvc3
+  name: ashusvc3 # name of service 
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234 # port of service 
+    protocol: TCP
+    targetPort: 80 # target pod port 
+  selector: # pod finder 
+    app: ashuapp2 # label of POD
+  type: NodePort # type of service
+status:
+  loadBalancer: {}

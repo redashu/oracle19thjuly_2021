@@ -1,0 +1,28 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "webapp1",
+        "creationTimestamp": null,
+        "labels": {
+            "run": "webapp1"
+        }
+    },
+    "spec": {
+        "containers": [
+            {
+                "name": "webapp1",
+                "image": "dockerashu/ashuoracleweb:v111",
+                "ports": [
+                    {
+                        "containerPort": 80
+                    }
+                ],
+                "resources": {}
+            }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst"
+    },
+    "status": {}
+}

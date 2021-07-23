@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuapp111
+  name: ashuapp111
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuapp111
+  strategy: {}
+  template: # template 
+    metadata:
+      creationTimestamp: null
+      labels: # label of pods 
+        app: ashuapp111
+    spec:
+      imagePullSecrets:  # keyword to call secret 
+      - name: ashusec2 # name of secret 
+      containers:
+      - image: phx.ocir.io/axmbtg8judkl/javaweb:v1 # image from OCR 
+        name: javaweb # name of the container 
+        ports:
+        - containerPort: 8080 # app port 
+        resources: {}
+status: {}

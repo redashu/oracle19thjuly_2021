@@ -1,1 +1,8 @@
-# check day1 to day5 branch for access 
+# summary of containerization and orchestration 
+
+<img src="sum.png">
+
+## Load balancer 
+
+<img src="overall.png">
+
